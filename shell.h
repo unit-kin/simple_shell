@@ -11,6 +11,7 @@
 #define MAX_PATH_LENGTH 1024
 
 void prompt(void);
+char **parse_args(char *line);
 char *find_path(char *command);
 
 #endif
