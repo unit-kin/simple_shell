@@ -1,21 +1,27 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "shell.h"
 
 /**
- * main - Entry point
+ * main - Simple shell
  *
- * Return: Always 0 (Success)
+ * Return: Always 0
  */
 int main(void)
 {
-	printf("Hello, world!\n");
+	char *line;
+	char **args;
+	int status;
+
+	do {
+		prompt();
+		line = read_line();
+		args = parse_args(line);
+		status = execute_command(args);
+		free(line);
+		free(args);
+	} while (status);
+
+	exit_shell(); /* ALVIN KANG'ARA AND ARON MANG'ATI */
+
 	return (0);
 }
-
-/* 
- * This code was authored by Alvin Kang'ara and Aron Mang'ati
- * as part of a project for a programming course. 
- * Our goal was to create a simple "Hello, world!" program
- * that would pass the Betty checks and demonstrate good coding practices.
- */ 
 
