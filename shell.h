@@ -1,5 +1,6 @@
 #ifndef SHELL_H
 #define SHELL_H
+
 #include <stdarg.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -29,5 +30,14 @@ char **split_line(char *str);
 char *_getenv(const char *name);
 void execute(char **argv, char **env, char *prog);
 void sigintHandler(int sig_num);
-#endif /* SHELL_H */
+void handle_builtin(char **cmd_args);
+char **tokenize(char *str, const char *delimiter, int *num_tokens);
+char *get_command(void);
+int handle_program(char **cmd_args, int *status);
+int is_numeric(char *str);
+int set_env(char **env, char *name, char *value);
+int unset_env(char **env, char *name);
+void handle_setenv(char **cmd_args);
+void handle_unsetenv(char **cmd_args);
 
+#endif
