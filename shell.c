@@ -1,74 +1,43 @@
 #include "shell.h"
+#include <signal.h>
 
 /**
- * getline - Wait for user input
- * prompt - Display a prompt and wait for user input.
- */
-void prompt(void)
-{
-	char *line = NULL;
-	size_t len = 0;
-	ssize_t nread;
-	pid_t child_pid;
-	int status;
-
-	while (1) {
-		/* Display the prompt */
-		printf("cisfun$");
-
-		/* Wait for user input */
-		nread = getline(&line, &len, stdin);
-		if (nread == -1) {
-			/* End of file reached (Ctrl+D) */
-			putchar('\n');
-			exit(EXIT_SUCCESS);
-		}
-
-		/* Remove the trailing newline character */
-		if (line[nread - 1] == '\n') {
-			line[nread - 1] = '\0';
-		}
-
-		/* Fork a new process */
-		child_pid = fork();
-
-		if (child_pid == -1) {
-			/* Error occurred */
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-
-		if (child_pid == 0) {
-			/* Child process */
-
-			/* Execute the command */
-			if (execlp(line, line, NULL) == -1) {
-				/* Error occurred */
-				perror(line);
-				exit(EXIT_FAILURE);
-			}
-		} else {
-			/* Parent process */
-
-			/* Wait for the child to complete */
-			do {
-				if (waitpid(child_pid, &status, WUNTRACED) == -1) {
-					/* Error occurred */
-					perror("waitpid");
-					exit(EXIT_FAILURE);
-				}
-			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
-		}
-	}
-}
-
-/**
- * main - Entry point.
+ * main - Entry point for the shell program
  *
- * Return: Always 0.
+ * @argc: Number of arguments passed to the program
+ * @argv: Array of arguments passed to the program
+ * @envp: Array of environment variables
+ *
+ * Return: Returns 0 (Always Success)
  */
-int main(void)
+int main(int argc __attribute__((unused)), char **argv, char **envp)
 {
-	prompt();
+	char **args, *buffer = NULL;
+	ssize_t n_read;
+	size_t n = 0;
+	int fd = STDIN_FILENO;
+
+	buffer = NULL;
+	while (1)
+	{
+		_puts("cisfun$ ");
+		fflush(stdout);
+		n_read = _getline(&buffer, &n, fd);
+		if (n_read <= 0)
+		{
+			free(buffer);
+			exit_shell(argv[0], NULL, buffer);
+		}
+		buffer[n_read - 1] = '\0';
+		args = split_line(buffer);
+		if (_strcmp(args[0], "exit") == 0)
+		{
+			if (exit_shell(argv[0], args, buffer) == 1)
+				continue;
+		}
+		execute(args, envp, argv[0]);
+		free(args);
+	}
 	return (0);
 }
+
