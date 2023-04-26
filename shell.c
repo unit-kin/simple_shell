@@ -12,52 +12,50 @@ void prompt(void)
 	pid_t child_pid;
 	int status;
 
-	while (1) {
-		/* Display the prompt */
+	while (1)
+	{
 		printf("cisfun$");
 
-		/* Wait for user input */
 		nread = getline(&line, &len, stdin);
-		if (nread == -1) {
-			/* End of file reached (Ctrl+D) */
+		if (nread == -1)
+		{
 			putchar('\n');
 			exit(EXIT_SUCCESS);
 		}
 
-		/* Remove the trailing newline character */
-		if (line[nread - 1] == '\n') {
+		if (line[nread - 1] == '\n')
+		{
 			line[nread - 1] = '\0';
 		}
 
-		/* Fork a new process */
 		child_pid = fork();
 
-		if (child_pid == -1) {
-			/* Error occurred */
+		if (child_pid == -1)
+		{
 			perror("fork");
 			exit(EXIT_FAILURE);
 		}
 
-		if (child_pid == 0) {
-			/* Child process */
+		if (child_pid == 0)
+		{
 
-			/* Execute the command */
-			if (execlp(line, line, NULL) == -1) {
-				/* Error occurred */
+			if (execlp(line, line, NULL) == -1)
+			{
 				perror(line);
 				exit(EXIT_FAILURE);
 			}
-		} else {
-			/* Parent process */
-
-			/* Wait for the child to complete */
-			do {
-				if (waitpid(child_pid, &status, WUNTRACED) == -1) {
-					/* Error occurred */
+		}
+		else
+		{
+			do
+			{
+				if (waitpid(child_pid, &status, WUNTRACED) == -1)
+				{
 					perror("waitpid");
 					exit(EXIT_FAILURE);
 				}
-			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+			}
+			while (!WIFEXITED(status) && !WIFSIGNALED(status));
 		}
 	}
 }
