@@ -12,6 +12,7 @@
 extern char **environ;
 
 void prompt(void);
+char **parse_args(char *line);
 char *find_path(char *command);
 void print_env(void);
 char *_getline(void);
