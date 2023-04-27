@@ -19,10 +19,8 @@ extern char **environ;
 #define TOK_DELIM " \t\r\n\a"
 #define CMD_DELIM ";"
 
-void exit_shell(void);
 int execute_command(char **args, int status);
 int execute_pipeline(char ***args, int num_commands);
-char **split_line(char *line, char *delimiter);
 char **split_commands(char *line);
 char **split_arguments(char *line);
 int shell_loop(void);
@@ -34,8 +32,8 @@ int exit_shell(char **arr, char *prog, char *buffer);
 int _strlen(char *s);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2,  unsigned int n);
-int _atoi(char *str);
-int isinteger(char *s);
+int string_to_int(char *str);
+int is_string_integer(const char *s);
 int _isdigit(int c);
 ssize_t _getline(char **lineptr, size_t *n, int fd);
 char *_strcpy(char *dest, char *src);
