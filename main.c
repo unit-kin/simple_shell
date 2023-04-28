@@ -1,58 +1,48 @@
 #include "shell.h"
 
 /**
- * main - Programs entry point
- * @argc: Number of arguments passed to the program
- * @argv: Array of pointers to the arguments
+ * main - Entry point to the Shell
  *
- * Return: Always zero
+ * Return: Always zero.
  */
-int main(int argc, char **argv)
+int main(void)
 {
-	char *cmd = NULL, **cmd_args = NULL;
-	int status = 0, num_tokens = 0;
+	char *line = NULL, **tokens = NULL;
+	int num_words = 0, exec_flag = 0;
+	size_t line_size = 0;
+	ssize_t line_len = 0;
 
-	while (1)
+	while (line_len >= 0)
 	{
-		cmd = get_command();
-		if (!cmd)
-			continue;
-
-		cmd_args = tokenize(cmd, " ", &num_tokens);
-		if (!cmd_args || !*cmd_args)
+		signal(SIGINT, handle_signal);
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "($) ", 4);
+		line_len = getline(&line, &line_size, stdin);
+		if (line_len == -1)
 		{
-			free(cmd);
-			continue;
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
+			break;
 		}
 
-		handle_builtin(cmd_args);
+		num_words = count_words(line);
+		if (line[0] != '\n' && num_words > 0)
+		{
+			tokens = split_string(line, " \t", &num_words);
+			exec_flag = exec_builtins(tokens, line);
+			if (!exec_flag)
+			{
+				tokens[0] = find_command(tokens[0]);
+				if (tokens[0] && access(tokens[0], X_OK) == 0)
+					execute_command(tokens[0], tokens);
+				else
+					perror("./hsh");
+			}
 
-		handle_setenv(cmd_args);
-
-		handle_unsetenv(cmd_args);
-
-		if (handle_program(cmd_args, &status) == 0)
-			continue;
-
-		fprintf(stderr, "hsh: command not found: %s\n", cmd_args[0]);
-		status = 127;
-
-		free(cmd_args);
-		free(cmd);
+			free_tokens(tokens);
+		}
 	}
 
-	free(cmd_args);
-	free(cmd);
-
-	if (argc > 1 && strcmp(argv[1], "exit") == 0)
-	{
-		if (argc == 2)
-			exit(status);
-		else if (argc == 3 && is_numeric(argv[2]))
-			exit(atoi(argv[2]));
-		else
-			fprintf(stderr, "hsh: exit: Illegal number: %s\n", argv[2]);
-	}
-
+	free(line);
 	return (0);
 }
