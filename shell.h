@@ -1,40 +1,40 @@
-#ifndef _SHELL_
-#define _SHELL_
+#ifndef SHELL_H
+#define SHELL_H
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <signal.h>
 #include <stdio.h>
+#include <stddef.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 extern char **environ;
 
-char *_strcat(char *dest, char *src);
-int _strlen(const char *s);
-int _strcmp(char *s1, char *s2);
-int _strncmp(const char *s1, const char *s2, size_t len);
-char *_strdup(char *str);
-int _atoi(char *s);
-int _putchar(char c);
-void _puts(char *str);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-int count_input(char *str);
-int count_delims(char *str, char *del);
-char *remove_new_line(char *str);
-void signal_handler(int sig_id);
-void _open_help(void);
-void _print_env(void);
-void _handle_exit(char **u_tokns, char *line);
-int execBuiltInCommands(char **u_tokns, char *line);
-void frees_env(char *env_var);
-void frees_tokens(char **tokns);
-int exec(char *cname, char **opts);
-char *_getenv(const char *name);
-char **tokenize(char *str, char *del, int len);
-char *find(char *cname);
+char *concatenate_strings(char *destination, char *source);
+int get_string_length(const char *string);
+int compare_strings(char *string1, char *string2);
+char *_strdup(const char *str);
+int _atoi(char *str);
+int _strncmp(const char *s1, const char *s2, size_t n);
+void _puts(const char *s);
+void *array_resize(void *array, size_t old_len, size_t new_len);
+int _putchar(char ch);
+void handle_exit(char **u_tokens, char *line);
+char *remove_character(char *string);
+char **split_string(char *string, char *delimiter, int *num_tokens);
+void handle_signal(int signal_id);
+void free_env_variable(char *env_var);
+void free_tokens(char **tokens);
+char *find_env_var(const char *name);
+void print_environment(void);
+void print_shell_help(void);
+int exec_builtins(char **tokens, char *line);
+int count_words(char *str);
+int count_delimiters(char *str, char *del);
+char *combine_paths(char *dest, const char *src);
+char *find_command(char *command_name);
+int execute_command(char *command, char **options);
 
 #endif
-
