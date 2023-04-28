@@ -1,56 +1,40 @@
-#ifndef SHELL_H
-#define SHELL_H
+#ifndef _SHELL_
+#define _SHELL_
 
-#include <stdarg.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <signal.h>
+#include <stdio.h>
 
-#define MAX_PATH_LENGTH 1024
-#define MAX_INPUT_SIZE 1024
-#define BUFFER_SIZE 1024
 extern char **environ;
-#define BUFSIZE 1024
-#define TOK_DELIM " \t\r\n\a"
-#define CMD_DELIM ";"
 
-int execute_command(char **args, int status);
-int execute_pipeline(char ***args, int num_commands);
-char **split_commands(char *line);
-char **split_arguments(char *line);
-int shell_loop(void);
-void prompt(void);
+char *_strcat(char *dest, char *src);
+int _strlen(const char *s);
+int _strcmp(char *s1, char *s2);
+int _strncmp(const char *s1, const char *s2, size_t len);
+char *_strdup(char *str);
+int _atoi(char *s);
 int _putchar(char c);
 void _puts(char *str);
-void print_strings(const char *seperator, const unsigned int n, ...);
-int exit_shell(char **arr, char *prog, char *buffer);
-int _strlen(char *s);
-int _strcmp(char *s1, char *s2);
-int _strncmp(char *s1, char *s2,  unsigned int n);
-int string_to_int(char *str);
-int is_string_integer(const char *s);
-int _isdigit(int c);
-ssize_t _getline(char **lineptr, size_t *n, int fd);
-char *_strcpy(char *dest, char *src);
-char *_strcat(char *dest, char *src);
-char **split_line(char *str);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+int count_input(char *str);
+int count_delims(char *str, char *del);
+char *remove_new_line(char *str);
+void signal_handler(int sig_id);
+void _open_help(void);
+void _print_env(void);
+void _handle_exit(char **u_tokns, char *line);
+int execBuiltInCommands(char **u_tokns, char *line);
+void frees_get_env(char *env_path);
+void frees_tokens(char **tokns);
+int exec(char *cname, char **opts);
 char *_getenv(const char *name);
-void execute(char **argv, char **env, char *prog);
-void sigintHandler(int sig_num);
-void handle_builtin(char **cmd_args);
-char **tokenize(char *str, const char *delimiter, int *num_tokens);
-char *get_command(void);
-int handle_program(char **cmd_args, int *status);
-int is_numeric(char *str);
-int set_env(char **env, char *name, char *value);
-int unset_env(char **env, char *name);
-void handle_setenv(char **cmd_args);
-void handle_unsetenv(char **cmd_args);
-int handle_cd(char **cmd_args);
+char **tokenize(char *str, char *del, int len);
+char *find(char *cname);
 
 #endif
+
