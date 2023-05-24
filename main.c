@@ -1,22 +1,23 @@
-#include "shell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <string.h>
 
-/**
- * main - Entry point to the Shell
- *
- * Return: Always zero.
- */
+#define BUFFER_SIZE 1024
+
 int main(void)
 {
-	char *line = NULL, **tokens = NULL;
-	int num_words = 0, exec_flag = 0;
+	char *line = NULL;
 	size_t line_size = 0;
 	ssize_t line_len = 0;
 
 	while (1)
 	{
-		signal(SIGINT, handle_signal);
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "($) ", 4);
+
 		line_len = getline(&line, &line_size, stdin);
 		if (line_len == -1)
 		{
@@ -25,29 +26,56 @@ int main(void)
 			break;
 		}
 
-		num_words = count_words(line);
-		if (line[0] != '\n' && num_words > 0)
+		/* Remove the newline character from the end of the line */
+		line[line_len - 1] = '\0';
+
+		pid_t child_pid = fork();
+
+		if (child_pid == -1)
 		{
-			tokens = split_string(line, " \t", &num_words);
-			exec_flag = exec_builtins(tokens, line);
-			if (!exec_flag)
-			{
-				tokens[0] = find_command(tokens[0]);
-				if (tokens[0] && access(tokens[0], X_OK) == 0)
-					execute_command(tokens[0], tokens);
-				else
-					perror("./hsh");
-			}
-
-			free_tokens(tokens);
+			perror("fork");
+			exit(EXIT_FAILURE);
 		}
+		else if (child_pid == 0)
+		{
+			/* Child process */
 
+			/* Execute the command using execve */
+			char *args[] = {line, NULL};
 
-		if (line != NULL)
-			free(line);
-		line = NULL;
+			execve(line, args, NULL);
+
+			/* If execve returns, an error occurred */
+			perror(line);
+			exit(EXIT_FAILURE);
+		}
+		else
+		{
+			/* Parent process */
+
+			/* Wait for the child process to complete */
+			int status;
+
+			waitpid(child_pid, &status, 0);
+
+			if (WIFEXITED(status))
+			{
+				/* Child process exited normally */
+				int exit_status = WEXITSTATUS(status);
+
+				printf("Child process exited with status %d\n", exit_status);
+			}
+			else if (WIFSIGNALED(status))
+			{
+				/* Child process terminated by a signal */
+				int signal_number = WTERMSIG(status);
+
+				printf("Child process terminated by signal %d\n", signal_number);
+			}
+		}
 	}
 
+	free(line);
 	return (0);
 }
 
