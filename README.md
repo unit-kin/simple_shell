@@ -1,6 +1,5 @@
-# 0x16. C - Simple Shell
- **By Spencer Cheng, featuring Julien Barbier**
- Project to be done in teams of 2 people (your team: Godswill Kalu, Vatalis Ibeh)
+**^ “The Gates of Shell”, by Spencer Cheng, featuring Julien Barbier**
+ Project to be done in teams of 2 people (your team: Alvin Kang'ara, Aron Mang'ati)
 
 # Learning Objectives
 At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
@@ -103,14 +102,3 @@ write (man 2 write)
 - string.c -it handles the strings(string length, write string,find string in directory,concatane strings....)
 - cmd.c - it finds the command the user entered.
 - execute.c - execute the command.
-
-## How to add Author file
-`Bash script for generating the list of authors in git repo`
-```
-#!/bin/sh
-
-git shortlog -se \
-  | perl -spe 's/^\s+\d+\s+//' \
-  | sed -e '/^CommitSyncScript.*$/d' \
-  > AUTHORS
-  ```
