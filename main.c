@@ -12,7 +12,7 @@ int main(void)
 	size_t line_size = 0;
 	ssize_t line_len = 0;
 
-	while (line_len >= 0)
+	while (1)
 	{
 		signal(SIGINT, handle_signal);
 		if (isatty(STDIN_FILENO))
@@ -41,8 +41,13 @@ int main(void)
 
 			free_tokens(tokens);
 		}
+
+
+		if (line != NULL)
+			free(line);
+		line = NULL;
 	}
 
-	free(line);
 	return (0);
 }
+
