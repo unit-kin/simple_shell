@@ -1,23 +1,22 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <string.h>
+#include "shell.h"
 
-#define BUFFER_SIZE 1024
-
+/**
+ * main - Entry point to the Shell
+ *
+ * Return: Always zero.
+ */
 int main(void)
 {
-	char *line = NULL;
+	char *line = NULL, **tokens = NULL;
+	int num_words = 0, exec_flag = 0;
 	size_t line_size = 0;
 	ssize_t line_len = 0;
 
-	while (1)
+	while (line_len >= 0)
 	{
+		signal(SIGINT, handle_signal);
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "($) ", 4);
-
 		line_len = getline(&line, &line_size, stdin);
 		if (line_len == -1)
 		{
@@ -26,56 +25,24 @@ int main(void)
 			break;
 		}
 
-		/* Remove the newline character from the end of the line */
-		line[line_len - 1] = '\0';
-
-		pid_t child_pid = fork();
-
-		if (child_pid == -1)
+		num_words = count_words(line);
+		if (line[0] != '\n' && num_words > 0)
 		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		else if (child_pid == 0)
-		{
-			/* Child process */
-
-			/* Execute the command using execve */
-			char *args[] = {line, NULL};
-
-			execve(line, args, NULL);
-
-			/* If execve returns, an error occurred */
-			perror(line);
-			exit(EXIT_FAILURE);
-		}
-		else
-		{
-			/* Parent process */
-
-			/* Wait for the child process to complete */
-			int status;
-
-			waitpid(child_pid, &status, 0);
-
-			if (WIFEXITED(status))
+			tokens = split_string(line, " \t", &num_words);
+			exec_flag = exec_builtins(tokens, line);
+			if (!exec_flag)
 			{
-				/* Child process exited normally */
-				int exit_status = WEXITSTATUS(status);
-
-				printf("Child process exited with status %d\n", exit_status);
+				tokens[0] = find_command(tokens[0]);
+				if (tokens[0] && access(tokens[0], X_OK) == 0)
+					execute_command(tokens[0], tokens);
+				else
+					perror("./hsh");
 			}
-			else if (WIFSIGNALED(status))
-			{
-				/* Child process terminated by a signal */
-				int signal_number = WTERMSIG(status);
 
-				printf("Child process terminated by signal %d\n", signal_number);
-			}
+			free_tokens(tokens);
 		}
 	}
 
 	free(line);
 	return (0);
 }
-
