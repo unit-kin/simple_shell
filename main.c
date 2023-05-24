@@ -1,48 +1,44 @@
 #include "shell.h"
 
 /**
- * main - Entry point to the Shell
+ * main - entry point
+ * @ac: arg count
+ * @av: arg vector
  *
- * Return: Always zero.
+ * Return: 0 on success, 1 on error
  */
-int main(void)
+int main(int ac, char **av)
 {
-	char *line = NULL, **tokens = NULL;
-	int num_words = 0, exec_flag = 0;
-	size_t line_size = 0;
-	ssize_t line_len = 0;
+	info_t info[] = { INFO_INIT };
+	int fd = 2;
 
-	while (line_len >= 0)
+	asm ("mov %1, %0\n\t"
+		"add $3, %0"
+		: "=r" (fd)
+		: "r" (fd));
+
+	if (ac == 2)
 	{
-		signal(SIGINT, handle_signal);
-		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "($) ", 4);
-		line_len = getline(&line, &line_size, stdin);
-		if (line_len == -1)
+		fd = open(av[1], O_RDONLY);
+		if (fd == -1)
 		{
-			if (isatty(STDIN_FILENO))
-				write(STDOUT_FILENO, "\n", 1);
-			break;
-		}
-
-		num_words = count_words(line);
-		if (line[0] != '\n' && num_words > 0)
-		{
-			tokens = split_string(line, " \t", &num_words);
-			exec_flag = exec_builtins(tokens, line);
-			if (!exec_flag)
+			if (errno == EACCES)
+				exit(126);
+			if (errno == ENOENT)
 			{
-				tokens[0] = find_command(tokens[0]);
-				if (tokens[0] && access(tokens[0], X_OK) == 0)
-					execute_command(tokens[0], tokens);
-				else
-					perror("./hsh");
+				_eputs(av[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(av[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
+				exit(127);
 			}
-
-			free_tokens(tokens);
+			return (EXIT_FAILURE);
 		}
+		info->readfd = fd;
 	}
-
-	free(line);
-	return (0);
+	populate_env_list(info);
+	read_history(info);
+	hsh(info, av);
+	return (EXIT_SUCCESS);
 }
