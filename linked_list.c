@@ -19,12 +19,12 @@ list_t *add(list_t **head, const char *str, int num)
 	if (!new_node)
 		return NULL;
 
-	_memset((void *)new_node, 0, sizeof(list_t));
+	_set_memory((void *)new_node, 0, sizeof(list_t));
 	new_node->num = num;
 
 	if (str)
 	{
-		new_node->str = _strdup(str);
+		new_node->str = duplicate_string(str);
 		if (!new_node->str)
 		{
 			free(new_node);
@@ -57,12 +57,12 @@ list_t *add_end(list_t **head, const char *str, int num)
 	if (!new_node)
 		return NULL;
 
-	_memset((void *)new_node, 0, sizeof(list_t));
+	_set_memory((void *)new_node, 0, sizeof(list_t));
 	new_node->num = num;
 
 	if (str)
 	{
-		new_node->str = _strdup(str);
+		new_node->str = duplicate_string(str);
 		if (!new_node->str)
 		{
 			free(new_node);
@@ -96,8 +96,8 @@ size_t print_str_list(const list_t *head)
 
 	while (head)
 	{
-		_puts(head->str ? head->str : "(nil)");
-		_puts("\n");
+		print_string(head->str ? head->str : "(nil)");
+		print_string("\n");
 		head = head->next;
 		count++;
 	}

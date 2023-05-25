@@ -14,7 +14,7 @@ void _print_string(char *str)
 		return;
 	while (str[i] != '\0')
 	{
-		_putchar(str[i]);
+		_putchar_stderr(str[i]);
 		i++;
 	}
 }

@@ -24,13 +24,13 @@ void set_info_struct(info_t *info, char **args)
 	info->fname = args[0];
 	if (info->arg)
 	{
-		info->argv = strtow(info->arg, " \t");
+		info->argv = split_string(info->arg, " \t");
 		if (!info->argv)
 		{
 			info->argv = malloc(sizeof(char *) * 2);
 			if (info->argv)
 			{
-				info->argv[0] = _strdup(info->arg);
+				info->argv[0] = duplicate_string(info->arg);
 				info->argv[1] = NULL;
 			}
 		}
@@ -50,24 +50,24 @@ void set_info_struct(info_t *info, char **args)
  */
 void free_info_struct(info_t *info, int free_all)
 {
-	ffree(info->argv);
+	free_string_array(info->argv);
 	info->argv = NULL;
 	info->path = NULL;
 	if (free_all)
 	{
-		if (!info->cmd_buf)
+		if (!info->cmd_buffer)
 			free(info->arg);
 		if (info->env)
-			free_list(&(info->env));
+			free_str_list(&(info->env));
 		if (info->history)
-			free_list(&(info->history));
+			free_str_list(&(info->history));
 		if (info->alias)
-			free_list(&(info->alias));
-		ffree(info->environ);
+			free_str_list(&(info->alias));
+		free_string_array(info->environ);
 		info->environ = NULL;
-		bfree((void **)info->cmd_buf);
-		if (info->readfd > 2)
-			close(info->readfd);
-		_putchar(BUF_FLUSH);
+		free_ptr((void **)info->cmd_buffer);
+		if (info->read_fd > 2)
+			close(info->read_fd);
+		print_character(BUF_FLUSH);
 	}
 }

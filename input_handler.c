@@ -55,7 +55,7 @@ ssize_t get_input(info_t *info)
 	ssize_t read_bytes = 0;
 	char **buffer_p = &(info->arguments), *p;
 
-	_putchar(BUF_FLUSH);
+	print_character(BUF_FLUSH);
 	read_bytes = buffer_input(info, &buffer, &length);
 	if (read_bytes == -1)
 		return (-1);
@@ -64,10 +64,10 @@ ssize_t get_input(info_t *info)
 		j = i;
 		p = buffer + i;
 
-		check_chain(info, buffer, &j, i, length);
+		check_chain_continuation(info, buffer, &j, i, length);
 		while (j < length)
 		{
-			if (is_chain(info, buffer, &j))
+			if (is_chain_delimiter(info, buffer, &j))
 				break;
 			j++;
 		}
@@ -80,7 +80,7 @@ ssize_t get_input(info_t *info)
 		}
 
 		*buffer_p = p;
-		return (_strlen(p));
+		return (str_length(p));
 	}
 
 	*buffer_p = buffer;
@@ -133,16 +133,16 @@ int get_line(info_t *info, char **ptr, size_t *length)
 	if (read_bytes == -1 || (read_bytes == 0 && len == 0))
 		return (-1);
 
-	c = _strchr(buffer + i, '\n');
+	c = str_find_char(buffer + i, '\n');
 	k = c ? 1 + (unsigned int)(c - buffer) : len;
-	new_p = _realloc(p, size, size ? size + k : k + 1);
+	new_p = _realloc_memory(p, size, size ? size + k : k + 1);
 	if (!new_p)
 		return (p ? (free(p), -1) : -1);
 
 	if (size)
-		_strncat(new_p, buffer + i, k - i);
+		strn_concat(new_p, buffer + i, k - i);
 	else
-		_strncpy(new_p, buffer + i, k - i + 1);
+		str_copy(new_p, buffer + i, k - i + 1);
 
 	size += k - i;
 	i = k;
@@ -162,7 +162,7 @@ int get_line(info_t *info, char **ptr, size_t *length)
  */
 void interruptHandler(__attribute__((unused)) int sig_num)
 {
-	_puts("\n");
-	_puts("$ ");
-	_putchar(BUF_FLUSH);
+	print_string("\n");
+	print_string("$ ");
+	print_character(BUF_FLUSH);
 }

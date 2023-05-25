@@ -17,9 +17,9 @@ int handle_exit(info_t *info)
 		if (exit_check == -1)
 		{
 			info->status = 2;
-			print_error(info, "Illegal number: ");
-			_eputs(info->argv[1]);
-			_eputchar('\n');
+			print_error_message(info, "Illegal number: ");
+			_print_string(info->argv[1]);
+			_putchar_stderr('\n');
 			return (1);
 		}
 		info->err_num = err_atoi(info->argv[1]);
@@ -42,39 +42,39 @@ int handle_cd(info_t *info)
 
 	s = getcwd(buffer, 1024);
 	if (!s)
-		_puts("TODO: getcwd failure emsg here\n");
+		print_string("TODO: getcwd failure emsg here\n");
 	if (!info->argv[1])
 	{
-		dir = getenv_value(info, "HOME=");
+		dir = get_environment_variable(info, "HOME=");
 		if (!dir)
-			chdir_ret = chdir((dir = getenv_value(info, "PWD=")) ? dir : "/");
+			chdir_ret = chdir((dir = get_environment_variable(info, "PWD=")) ? dir : "/");
 		else
 			chdir_ret = chdir(dir);
 	}
-	else if (_strcmp(info->argv[1], "-") == 0)
+	else if (str_compare(info->argv[1], "-") == 0)
 	{
-		if (!getenv_value(info, "OLDPWD="))
+		if (!get_environment_variable(info, "OLDPWD="))
 		{
-			_puts(s);
-			_putchar('\n');
+			print_string(s);
+			print_character('\n');
 			return (1);
 		}
-		_puts(getenv_value(info, "OLDPWD="));
-		_putchar('\n');
-		chdir_ret = chdir((dir = getenv_value(info, "OLDPWD=")) ? dir : "/");
+		print_string(get_environment_variable(info, "OLDPWD="));
+		print_character('\n');
+		chdir_ret = chdir((dir = get_environment_variable(info, "OLDPWD=")) ? dir : "/");
 	}
 	else
 		chdir_ret = chdir(info->argv[1]);
 	if (chdir_ret == -1)
 	{
-		print_error(info, "can't cd to ");
-		_eputs(info->argv[1]);
-		_eputchar('\n');
+		print_error_message(info, "can't cd to ");
+		_print_string(info->argv[1]);
+		_putchar_stderr('\n');
 	}
 	else
 	{
-		setenv_value(info, "OLDPWD", getenv_value(info, "PWD="));
-		setenv_value(info, "PWD", getcwd(buffer, 1024));
+		set_environment(info, "OLDPWD", get_environment_variable(info, "PWD="));
+		set_environment(info, "PWD", getcwd(buffer, 1024));
 	}
 	return (0);
 }
@@ -90,8 +90,8 @@ int print_shell_help(info_t *info)
 	char **arg_array;
 
 	arg_array = info->argv;
-	_puts("Welcome to the ALX simple shell help page \n");
+	print_string("Welcome to the ALX simple shell help page \n");
 	if (*arg_array)
-		_puts(*arg_array);
+		print_string(*arg_array);
 	return (0);
 }

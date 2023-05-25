@@ -94,3 +94,27 @@ write (man 2 write)
 # files
 - README.md - description about the project repo
 - AUTHORS - file at the  root of your repository, listing all individuals having contributed content to the repository.
+- builtin_commands.c: Implements various built-in commands of the shell.
+- command_parser.c: Parses and processes user commands into executable commands.
+- dynamic_memory.c: Provides functions for dynamic memory allocation and deallocation.
+- environment.c: Manages the shell environment variables.
+- environment_utils.c: Contains utility functions for working with environment variables.
+- exit_handler.c: Handles the exit functionality of the shell.
+- history_io.c: Manages the reading from and writing to the history file.
+- info_utils.c: Contains utility functions for working with the shell's info structure.
+- input_handler.c: Handles user input and command line editing.
+- io_utils.c: Provides input/output utility functions.
+- linked_list.c: Implements a linked list data structure.
+- linked_list.c~: A backup or temporary file of the linked list implementation.
+- linked_list_utils.c: Contains utility functions for working with linked lists.
+- main.c: Contains the main function of the shell.
+- main_shell.c: Implements the main shell loop and command execution logic.
+- memory_utils.c: Provides utility functions for memory management.
+- more_builtin_commands.c: Additional built-in commands for the shell.
+- more_io_utils.c: Additional input/output utility functions.
+- more_string_utils.c: Additional string manipulation utility functions.
+- shell.h: Header file containing function prototypes, structure definitions, and macros for the shell.
+- string_conversion.c: Functions for converting data types to strings.
+- string_tokenizer.c: Implements a string tokenizer to split strings into tokens.
+- string_utils.c: Provides utility functions for string manipulation.
+- variable_utils.c: Contains utility functions for working with variables.

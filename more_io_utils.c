@@ -36,13 +36,13 @@ int err_atoi(char *s)
  */
 void print_error_message(info_t *info, char *error_string)
 {
-	_eputs(info->fname);
-	_eputs(": ");
+	_print_string(info->fname);
+	_print_string(": ");
 	print_decimal(info->line_count, STDERR_FILENO);
-	_eputs(": ");
-	_eputs(info->argv[0]);
-	_eputs(": ");
-	_eputs(error_string);
+	_print_string(": ");
+	_print_string(info->argv[0]);
+	_print_string(": ");
+	_print_string(error_string);
 }
 
 /**
@@ -54,12 +54,12 @@ void print_error_message(info_t *info, char *error_string)
  */
 int print_decimal(int input, int fd)
 {
-	int (*put_char)(char) = _putchar;
+	int (*put_char)(char) = print_character;
 	int i, count = 0;
 	unsigned int absolute, current;
 
 	if (fd == STDERR_FILENO)
-		put_char = _eputchar;
+		put_char = _putchar_stderr;
 
 	if (input < 0)
 	{

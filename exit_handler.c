@@ -32,14 +32,14 @@ char *str_copy(char *dest, char *src, int n)
 }
 
 /**
- * str_concat - concatenates two strings
+ * strn_concat - concatenates two strings
  * @dest: the first string
  * @src: the second string
  * @n: the amount of bytes to be maximally used
  *
  * Return: the concatenated string
  */
-char *str_concat(char *dest, char *src, int n)
+char *strn_concat(char *dest, char *src, int n)
 {
 	int i, j;
 	char *s = dest;
