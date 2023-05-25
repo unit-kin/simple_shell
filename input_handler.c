@@ -53,7 +53,7 @@ ssize_t get_input(info_t *info)
 	static char *buffer;
 	static size_t i, j, length;
 	ssize_t read_bytes = 0;
-	char **buffer_p = &(info->arguments), *p;
+	char **buffer_p = &(info->arg), *p;
 
 	print_character(BUF_FLUSH);
 	read_bytes = buffer_input(info, &buffer, &length);

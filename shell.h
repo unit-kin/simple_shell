@@ -31,20 +31,18 @@ extern char **environ;
 #define CMD_AND		2
 #define CMD_CHAIN	3
 
-typedef struct list_s {
+typedef struct liststr {
     char *str;
     int num;
-    struct list_s *next;
+    struct liststr *next;
 } list_t;
 
 typedef struct passinfo {
     	int read_fd;
     	char **argv;
     	int status;
-  	int err_num;
     	int error_num;
   	char *arg;
-  	char *arguments;
 	char *path;
 	int argc;
   	unsigned int line_count;
@@ -61,7 +59,7 @@ typedef struct passinfo {
 } info_t;
 
 #define INFO_INIT \
-{0, NULL, 0, 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, NULL, \
+{0, NULL, 0, 0, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, \
     NULL, 0, NULL, 0, 0}
 
 typedef struct builtin{

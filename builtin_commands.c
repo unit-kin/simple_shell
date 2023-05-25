@@ -22,10 +22,10 @@ int handle_exit(info_t *info)
 			_putchar_stderr('\n');
 			return (1);
 		}
-		info->err_num = err_atoi(info->argv[1]);
+		info->error_num = err_atoi(info->argv[1]);
 		return (-2);
 	}
-	info->err_num = -1;
+	info->error_num = -1;
 	return (-2);
 }
 

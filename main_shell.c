@@ -60,8 +60,8 @@ int find_builtin_command(info_t *info)
 		{"env", display_environment},
 		{"help", print_shell_help},
 		{"history", display_history},
-		{"setenv", set_environment},
-		{"unsetenv", unset_environment},
+		{"setenv", set_environment_variable},
+		{"unsetenv", unset_environment_variable},
 		{"cd", handle_cd},
 		{"alias", manage_alias},
 		{NULL, NULL}
