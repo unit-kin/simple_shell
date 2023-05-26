@@ -31,40 +31,76 @@ extern char **environ;
 #define CMD_AND		2
 #define CMD_CHAIN	3
 
-typedef struct liststr {
-    char *str;
-    int num;
-    struct liststr *next;
+/**
+ * struct liststr - singly linked list
+ * @num: the number field
+ * @str: a string
+ * @next: points to the next node
+ */
+typedef struct liststr
+{
+  char *str;
+  int num;
+  struct liststr *next;
 } list_t;
 
-typedef struct passinfo {
-    	int read_fd;
-    	char **argv;
-    	int status;
-    	int error_num;
-  	char *arg;
-	char *path;
-	int argc;
-  	unsigned int line_count;
-	int line_count_flag;
-	char *fname;
-	list_t *env;
-	list_t *history;
-	list_t *alias;
-	char **environ;
-	int env_changed;
-	char **cmd_buffer;
-  	int cmd_buffer_type;
-	int hist_count;
+/**
+ *struct passinfo - contains pseudo-arguements to pass into a function,
+ *		allowing uniform prototype for function pointer struct
+ *@arg: a string generated from getline containing arguements
+ *@argv: an array of strings generated from arg
+ *@path: a string path for the current command
+ *@argc: the argument count
+ *@line_count: the error count
+ *@error_num: the error code for exit()s
+ *@line_count_flag: if on count this line of input
+ *@fname: the program filename
+ *@env: linked list local copy of environ
+ *@environ: custom modified copy of environ from LL env
+ *@history: the history node
+ *@alias: the alias node
+ *@env_changed: on if environ was changed
+ *@status: the return status of the last exec'd command
+ *@cmd_buffer: address of pointer to cmd_buf, on if chaining
+ *@cmd_buffer_type: CMD_type ||, &&, ;
+ *@read_fd: the fd from which to read line input
+ *@hist_count: the history line number count
+ */
+typedef struct passinfo
+{
+  int read_fd;
+  char **argv;
+  int status;
+  int error_num;
+  char *arg;
+  char *path;
+  int argc;
+  unsigned int line_count;
+  int line_count_flag;
+  char *fname;
+  list_t *env;
+  list_t *history;
+  list_t *alias;
+  char **environ;
+  int env_changed;
+  char **cmd_buffer;
+  int cmd_buffer_type;
+  int hist_count;
 } info_t;
 
 #define INFO_INIT \
 {0, NULL, 0, 0, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, \
     NULL, 0, NULL, 0, 0}
 
-typedef struct builtin{
-    char *name;
-    int (*func)(info_t *);
+/**
+ *struct builtin - contains a builtin string and related function
+ *@name: the builtin command flag
+ *@func: the function
+ */
+typedef struct builtin
+{
+  char *name;
+  int (*func)(info_t *);
 } builtin_table;
 
 int is_interactive_mode(info_t *info);

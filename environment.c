@@ -35,7 +35,7 @@ char *get_environment_variable(info_t *info, const char *name)
 }
 
 /**
- * set_environment_variable - Initialize a new environment variable or modify an existing one
+ * set_environment_variable - Initialize a new environment variable
  * @info: Structure containing potential arguments.
  *
  * Return: Always 0

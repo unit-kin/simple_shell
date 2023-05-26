@@ -15,7 +15,7 @@ size_t list_length(const list_t *head)
 		head = head->next;
 		count++;
 	}
-	return count;
+	return (count);
 }
 
 /**
@@ -34,11 +34,11 @@ char **list_to_array(list_t *head)
 	char *str;
 
 	if (!head || !size)
-		return NULL;
+		return (NULL);
 
 	strings = malloc(sizeof(char *) * (size + 1));
 	if (!strings)
-		return NULL;
+		return (NULL);
 
 	for (i = 0; node; node = node->next, i++)
 	{
@@ -48,7 +48,7 @@ char **list_to_array(list_t *head)
 			for (j = 0; j < i; j++)
 				free(strings[j]);
 			free(strings);
-			return NULL;
+			return (NULL);
 		}
 
 		str = copy_string(str, node->str);
@@ -56,7 +56,7 @@ char **list_to_array(list_t *head)
 	}
 
 	strings[size] = NULL;
-	return strings;
+	return (strings);
 }
 
 /**
@@ -79,7 +79,7 @@ size_t print_list(const list_t *head)
 		head = head->next;
 		count++;
 	}
-	return count;
+	return (count);
 }
 
 /**
@@ -98,10 +98,10 @@ list_t *find_node_starts_with(list_t *head, char *prefix, char next_char)
 	{
 		match = str_starts_with(head->str, prefix);
 		if (match && ((next_char == -1) || (*match == next_char)))
-			return head;
+			return (head);
 		head = head->next;
 	}
-	return NULL;
+	return (NULL);
 }
 
 /**
@@ -118,9 +118,9 @@ ssize_t get_node_index(list_t *head, list_t *node)
 	while (head)
 	{
 		if (head == node)
-			return index;
+			return (index);
 		head = head->next;
 		index++;
 	}
-	return -1;
+	return (-1);
 }

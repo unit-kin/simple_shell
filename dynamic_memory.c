@@ -14,7 +14,7 @@ char *_set_memory(char *dest, char ch, unsigned int n)
 
 	for (i = 0; i < n; i++)
 		dest[i] = ch;
-	return dest;
+	return (dest);
 }
 
 /**
@@ -45,22 +45,22 @@ void *_realloc_memory(void *ptr, unsigned int old_size, unsigned int new_size)
 	char *new_ptr;
 
 	if (!ptr)
-		return malloc(new_size);
+		return (malloc(new_size));
 	if (!new_size)
 	{
 		free(ptr);
-		return NULL;
+		return (NULL);
 	}
 	if (new_size == old_size)
-		return ptr;
+		return (ptr);
 
 	new_ptr = malloc(new_size);
 	if (!new_ptr)
-		return NULL;
+		return (NULL);
 
 	old_size = old_size < new_size ? old_size : new_size;
 	while (old_size--)
 		new_ptr[old_size] = ((char *)ptr)[old_size];
 	free(ptr);
-	return new_ptr;
+	return (new_ptr);
 }

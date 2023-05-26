@@ -38,7 +38,7 @@ int _putchar_stderr(char c)
 	}
 	if (c != BUF_FLUSH)
 		buf[i++] = c;
-	return 1;
+	return (1);
 }
 
 /**
@@ -61,7 +61,7 @@ int _putchar_fd(char c, int fd)
 	}
 	if (c != BUF_FLUSH)
 		buf[i++] = c;
-	return 1;
+	return (1);
 }
 
 /**
@@ -76,10 +76,10 @@ int _print_string_fd(char *str, int fd)
 	int i = 0;
 
 	if (!str)
-		return 0;
+		return (0);
 	while (*str)
 	{
 		i += _putchar_fd(*str++, fd);
 	}
-	return i;
+	return (i);
 }

@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * is_chain_delimiter - checks if the current character in the buffer is a chain delimiter
+ * is_chain_delimiter - checks if character is a chain delimiter
  * @info: the parameter struct
  * @buf: the character buffer
  * @p: address of the current position in buf
@@ -30,14 +30,14 @@ int is_chain_delimiter(info_t *info, char *buf, size_t *p)
 		info->cmd_buffer_type = CMD_CHAIN;
 	}
 	else
-		return 0;
+		return (0);
 
 	*p = j;
-	return 1;
+	return (1);
 }
 
 /**
- * check_chain_continuation - checks if we should continue chaining based on the last status
+ * check_chain_continuation - checks if we should continue chaining
  * @info: the parameter struct
  * @buf: the character buffer
  * @p: address of the current position in buf
@@ -86,17 +86,17 @@ int replace_alias(info_t *info)
 	{
 		node = find_node_starts_with(info->alias, info->argv[0], '=');
 		if (!node)
-			return 0;
+			return (0);
 		free(info->argv[0]);
 		p = str_find_char(node->str, '=');
 		if (!p)
-			return 0;
+			return (0);
 		p = duplicate_string(p + 1);
 		if (!p)
-			return 0;
+			return (0);
 		info->argv[0] = p;
 	}
-	return 1;
+	return (1);
 }
 
 /**
@@ -137,7 +137,7 @@ int replace_vars(info_t *info)
 		replace_string(&info->argv[i], duplicate_string(""));
 
 	}
-	return 0;
+	return (0);
 }
 
 /**
@@ -151,5 +151,5 @@ int replace_string(char **old, char *new)
 {
 	free(*old);
 	*old = new;
-	return 1;
+	return (1);
 }
