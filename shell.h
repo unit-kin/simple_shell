@@ -16,6 +16,12 @@
 #define READ_BUF_SIZE 1024
 #define WRITE_BUF_SIZE 1024
 #define BUF_FLUSH -1
+<<<<<<< HEAD
+=======
+
+#define CONVERT_UNSIGNED 2
+#define CONVERT_LOWERCASE 1
+>>>>>>> 13845687004655a08a706b727e7bd44e2c803711
 
 /* for command chaining */
 #define CMD_NORM	0
