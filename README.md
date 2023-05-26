@@ -1,6 +1,5 @@
-# 0x16. C - Simple Shell
- **By Spencer Cheng, featuring Julien Barbier**
- Project to be done in teams of 2 people (your team: Godswill Kalu, Vatalis Ibeh)
+**^ “The Gates of Shell”, by Spencer Cheng, featuring Julien Barbier**
+ Project to be done in teams of 2 people (your team: Alvin Kang'ara, Aron Mang'ati)
 
 # Learning Objectives
 At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
@@ -94,23 +93,28 @@ write (man 2 write)
 
 # files
 - README.md - description about the project repo
-- man_1_simple_shell - is the man page for the shell we are going to write.
-- AUTHORS - file at the  root of your repository, listing all individuals having contributed content to the repository. 
-- main.h - is the header file which contains the standared header file and prototype of o function used in the program.
-- main.c - initialize the program with infinite loop by call the prompt function
-- prompt.c - it use getline system call to read the input from the user and run infinite loop with fork to keep prompt going.
-- special_character - It identiies if the special inputs such as if the frist input is slash,the user typed exit or env...
-- string.c -it handles the strings(string length, write string,find string in directory,concatane strings....)
-- cmd.c - it finds the command the user entered.
-- execute.c - execute the command.
-
-## How to add Author file
-`Bash script for generating the list of authors in git repo`
-```
-#!/bin/sh
-
-git shortlog -se \
-  | perl -spe 's/^\s+\d+\s+//' \
-  | sed -e '/^CommitSyncScript.*$/d' \
-  > AUTHORS
-  ```
+- AUTHORS - file at the  root of your repository, listing all individuals having contributed content to the repository.
+- builtin_commands.c: Implements various built-in commands of the shell.
+- command_parser.c: Parses and processes user commands into executable commands.
+- dynamic_memory.c: Provides functions for dynamic memory allocation and deallocation.
+- environment.c: Manages the shell environment variables.
+- environment_utils.c: Contains utility functions for working with environment variables.
+- exit_handler.c: Handles the exit functionality of the shell.
+- history_io.c: Manages the reading from and writing to the history file.
+- info_utils.c: Contains utility functions for working with the shell's info structure.
+- input_handler.c: Handles user input and command line editing.
+- io_utils.c: Provides input/output utility functions.
+- linked_list.c: Implements a linked list data structure.
+- linked_list.c~: A backup or temporary file of the linked list implementation.
+- linked_list_utils.c: Contains utility functions for working with linked lists.
+- main.c: Contains the main function of the shell.
+- main_shell.c: Implements the main shell loop and command execution logic.
+- memory_utils.c: Provides utility functions for memory management.
+- more_builtin_commands.c: Additional built-in commands for the shell.
+- more_io_utils.c: Additional input/output utility functions.
+- more_string_utils.c: Additional string manipulation utility functions.
+- shell.h: Header file containing function prototypes, structure definitions, and macros for the shell.
+- string_conversion.c: Functions for converting data types to strings.
+- string_tokenizer.c: Implements a string tokenizer to split strings into tokens.
+- string_utils.c: Provides utility functions for string manipulation.
+- variable_utils.c: Contains utility functions for working with variables.
