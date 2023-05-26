@@ -1,12 +1,12 @@
 #include "shell.h"
 
 /**
- * _print_string - prints a string to stdout
+ *_eputs - prints an input string
  * @str: the string to be printed
  *
  * Return: Nothing
  */
-void _print_string(char *str)
+void _eputs(char *str)
 {
 	int i = 0;
 
@@ -14,19 +14,19 @@ void _print_string(char *str)
 		return;
 	while (str[i] != '\0')
 	{
-		_putchar_stderr(str[i]);
+		_eputchar(str[i]);
 		i++;
 	}
 }
 
 /**
- * _putchar_stderr - writes the character c to stderr
+ * _eputchar - writes the character c to stderr
  * @c: The character to print
  *
  * Return: On success 1.
- *         On error, -1 is returned, and errno is set appropriately.
+ * On error, -1 is returned, and errno is set appropriately.
  */
-int _putchar_stderr(char c)
+int _eputchar(char c)
 {
 	static int i;
 	static char buf[WRITE_BUF_SIZE];
@@ -42,14 +42,14 @@ int _putchar_stderr(char c)
 }
 
 /**
- * _putchar_fd - writes the character c to the given file descriptor
+ * _putfd - writes the character c to given fd
  * @c: The character to print
- * @fd: The file descriptor to write to
+ * @fd: The filedescriptor to write to
  *
  * Return: On success 1.
- *         On error, -1 is returned, and errno is set appropriately.
+ * On error, -1 is returned, and errno is set appropriately.
  */
-int _putchar_fd(char c, int fd)
+int _putfd(char c, int fd)
 {
 	static int i;
 	static char buf[WRITE_BUF_SIZE];
@@ -65,13 +65,13 @@ int _putchar_fd(char c, int fd)
 }
 
 /**
- * _print_string_fd - prints a string to the given file descriptor
- * @str: The string to be printed
- * @fd: The file descriptor to write to
+ *_putsfd - prints an input string
+ * @str: the string to be printed
+ * @fd: the filedescriptor to write to
  *
- * Return: The number of characters put
+ * Return: the number of chars put
  */
-int _print_string_fd(char *str, int fd)
+int _putsfd(char *str, int fd)
 {
 	int i = 0;
 
@@ -79,7 +79,7 @@ int _print_string_fd(char *str, int fd)
 		return (0);
 	while (*str)
 	{
-		i += _putchar_fd(*str++, fd);
+		i += _putfd(*str++, fd);
 	}
 	return (i);
 }
